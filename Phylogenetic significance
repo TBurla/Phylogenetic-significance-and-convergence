@@ -1,0 +1,34 @@
+# Setting
+  ## Open packages
+library(picante)
+library(ape)
+library(adephylo)
+library(ade4)
+library(phylobase)
+library(geiger)
+
+  ## Set work directory
+wd <- "PATH/TO/DATA
+setwd(wd)
+
+  ## Open data
+data_tree <- read.tree("Phylo_tree.nwk")
+data_morfo <- read.csv("Morpho_traits.csv", header=TRUE)
+  ## Check names errors
+rownames(data_morfo) <- data_morfo$sample_ID
+name.check(data_tree, data_morfo)
+  ## Check names order
+data_morfo <- data_morfo[data_tree$tip.label, ]
+
+# Calculando sinal filogen?tico
+  ## create file combining phylogeny and morphology
+phylotraits <- phylo4d(data_tree, data_morfo)
+
+## Moran test
+moran.test <- abouheif.moran(phylotraits, method="Abouheif")
+  ### Show results
+plot(moran.test)
+
+## Abouheif test
+abouheif.test <- abouheif.moran(phylotraits, method="oriAbouheif")
+abouheif.test
