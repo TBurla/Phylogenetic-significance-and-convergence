@@ -1,0 +1,31 @@
+## Setting
+  # Open packages
+library(windex)
+
+  # Set work directory
+wd <- "PATH/TO/DATA"
+setwd(wd)
+
+  # Insert data
+data.trait <- read.csv("$Morpho_traits.csv", header=TRUE)
+data.tree <- read.tree("$Phylo_tree.nwk")
+data.sp <- read.csv("$species.txt", header=TRUE)
+                    
+  # Check tree
+treedatacheck(data.tree, data.sp[,1])
+                    
+## calculating Wheatsheaf index
+windex(data.trait, data.tree, traits=c("XXX","YYY"), focal=data.trait[,2], SE=TRUE)
+  # Where:
+    ## data -> dataframe containing a column of 0 and 1 to denote non-focal and focal taxa, respectively, and columns of trait data wich you which to plot. First column must be named 'species' and contain species names that correspond to those in the phylogeny.
+    ## tree -> Phylogenetic tree of class 'phylo' containing branch lengths. Should be ultrametric.
+    ## traits -> column numbers (or names) for the traits for which you wnat to calculate a Wheatshead index.
+    ## focal -> column in dataframe containing the focal designations.
+    ## SE -> logical specifying whether to standardise the traits by their standard error across species.
+  # Results:
+    ## w -> Wheatsheaf index
+    ## low95 -> lower bound of 95% confidence interval for the Wheatsheaf Index obtained by Jackkniving
+    ## up95 -> upper bound of 95% confidence interval for the Wheatsheaf Index obtained by Jackkniving
+
+# Plot results
+plotTrait(data, c("XXX","YYY"), focal=data[,2])
